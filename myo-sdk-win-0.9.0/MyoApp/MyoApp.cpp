@@ -65,9 +65,9 @@ public:
 
 	std::string getKeySet(myo::Myo* myo) {
 		size_t myoId = identifyMyo(myo);
-		if (myoId == 0) return "qwert";//"cdega";
-		if (myoId == 1) return "asdfg";//"12345";
-		if (myoId == 2) return "zxcvb";
+		if (myoId == 0) return "qerty";
+		if (myoId == 1) return "adfgh"; //TODO przywrocic przed commitem!!!;
+		if (myoId == 2) return "zcvbn";
 		throw "Up to three Myos are supported!";
 	}
 
@@ -164,10 +164,11 @@ public:
 		std::cout << "MYO " << myoId << ": ";
 		std::cout << o.rollPos << " | " << o.pitchPos << std::endl;
 
+		// #justhackathonthings
 		int currentKey =
-			o.rollPos > o.rollBase + 2 ? o.keyset[0] :
-			(o.rollPos != 0 && o.rollPos < o.rollBase) ? o.keyset[1] :
-			(o.pitchPos != 0 && o.pitchPos < o.pitchBase) ? o.keyset[2] :
+			(o.rollPos > o.rollBase + 2 && o.pitchPos < o.pitchBase + 4 && o.pitchPos > o.pitchBase - 3) ? o.keyset[0] :  
+			(o.rollPos != 0 && o.rollPos < o.rollBase && o.pitchPos < o.pitchBase + 4 && o.pitchPos > o.pitchBase - 3) ? o.keyset[1] :
+			(o.pitchPos > 0 && o.pitchPos < o.pitchBase - 4) ? o.keyset[2] :
 			o.pitchPos > o.pitchBase + 6 ? o.keyset[3] :
 			o.previousKey;
 
@@ -207,7 +208,7 @@ int main(int argc, char** argv)
 		while (1) {
 			// In each iteration of our main loop, we run the Myo event loop for a set number of milliseconds.
 			// In this case, we wish to update our display 20 times a second, so we run for 1000/20 milliseconds.
-			hub.run(1000 / 2);
+			hub.run(1000 / 50);
 			// After processing events, we call the print() member function we defined above to print out the values we've
 			// obtained from any events that have occurred.
 			collector.printAll();
